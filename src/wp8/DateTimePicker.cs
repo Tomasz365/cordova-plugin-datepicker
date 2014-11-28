@@ -92,7 +92,6 @@ namespace WPCordovaClassLib.Cordova.Commands
                     {
                         mySavedHandler = ResultHandlers[CurrentCommandCallbackId];
                     }
-                    Debug.WriteLine(_callbackId);
                     string value = WPCordovaClassLib.Cordova.JSON.JsonHelper.Deserialize<string[]>(options)[0];
                     dateTimePickerOptions = new DateTimePickerOptions();
                     if(!String.IsNullOrEmpty(value)) {
@@ -188,7 +187,6 @@ namespace WPCordovaClassLib.Cordova.Commands
                 case TaskResult.OK:
                     try
                     {
-                        Debug.WriteLine(e.Value.Value);
                         long result = (long) e.Value.Value.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
                         if (!ResultHandlers.ContainsKey(CurrentCommandCallbackId))
                         {
