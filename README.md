@@ -133,7 +133,7 @@ Default: `1`
 
 ## Requirements
 - PhoneGap 3.0 or newer / Cordova 3.0 or newer
-- Android 2.3.1 or newer / iOS 5 or newer
+- Android 2.3.1 or newer / iOS 5 or newer / WP8
 
 ## Example
 
