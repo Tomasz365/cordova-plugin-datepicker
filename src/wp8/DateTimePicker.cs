@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.Phone.Controls;
 using System.Windows;
 using Microsoft.Phone.Tasks;
+using System.Diagnostics;
 
 namespace WPCordovaClassLib.Cordova.Commands
 {
@@ -25,6 +26,9 @@ namespace WPCordovaClassLib.Cordova.Commands
     /// </summary>
     public class DateTimePicker : BaseCommand
     {
+
+        private string _callbackId;
+        public event EventHandler<PluginResult> mySavedHandler;
 
         #region DateTimePicker Options
 
@@ -82,7 +86,13 @@ namespace WPCordovaClassLib.Cordova.Commands
            
                 try
                 {
-
+                    var args = JSON.JsonHelper.Deserialize<string[]>(options);
+                    _callbackId = args[args.Length - 1];
+                    if (ResultHandlers.ContainsKey(CurrentCommandCallbackId))
+                    {
+                        mySavedHandler = ResultHandlers[CurrentCommandCallbackId];
+                    }
+                    Debug.WriteLine(_callbackId);
                     string value = WPCordovaClassLib.Cordova.JSON.JsonHelper.Deserialize<string[]>(options)[0];
                     dateTimePickerOptions = new DateTimePickerOptions();
                     if(!String.IsNullOrEmpty(value)) {
@@ -121,12 +131,17 @@ namespace WPCordovaClassLib.Cordova.Commands
             {
                 try
                 {
+                    var args = JSON.JsonHelper.Deserialize<string[]>(options);
+                    _callbackId = args[args.Length - 1];
+                    if (ResultHandlers.ContainsKey(CurrentCommandCallbackId))
+                    {
+                        mySavedHandler = ResultHandlers[CurrentCommandCallbackId];
+                    }
                     string value = WPCordovaClassLib.Cordova.JSON.JsonHelper.Deserialize<string[]>(options)[0];
                     dateTimePickerOptions = new DateTimePickerOptions();
                     if (!String.IsNullOrEmpty(value)) {
                         dateTimePickerOptions.Value = FromUnixTime(long.Parse(value));
                     }
-
                    // this.dateTimePickerOptions = String.IsNullOrEmpty(options) ? new DateTimePickerOptions() :
                    //     WPCordovaClassLib.Cordova.JSON.JsonHelper.Deserialize<DateTimePickerOptions>(options);
 
@@ -151,8 +166,7 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         private DateTime FromUnixTime(long unixtime) {
             // Unix timestamp is seconds past epoch
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return dtDateTime.AddMilliseconds(unixtime).ToLocalTime();
+            return  new DateTime(1970, 1, 1, 0, 0, 0, 0).AddMilliseconds(unixtime).ToLocalTime();
         }
 
 
@@ -174,17 +188,22 @@ namespace WPCordovaClassLib.Cordova.Commands
                 case TaskResult.OK:
                     try
                     {
+                        Debug.WriteLine(e.Value.Value);
                         long result = (long) e.Value.Value.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                        DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result + ""));
+                        if (!ResultHandlers.ContainsKey(CurrentCommandCallbackId))
+                        {
+                            ResultHandlers.Add(CurrentCommandCallbackId, mySavedHandler);
+                        }
+                        DispatchCommandResult(new PluginResult(PluginResult.Status.OK, result.ToString()), _callbackId);
                     }
                     catch (Exception ex)
                     {
-                        DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR, "Datetime picker error. " + ex.Message));
+                        DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR, "Datetime picker error. " + ex.Message), _callbackId);
                     }
                     break;
 
                 case TaskResult.Cancel:
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR, "Canceled."));
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR, "Canceled."), _callbackId);
                     break;               
             }
 

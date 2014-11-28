@@ -1,4 +1,4 @@
-var exec = require('cordova/exec');
+cordova.define("com.plugin.datepicker.datetimepicker", function(require, exports, module) { var exec = require('cordova/exec');
 
     var pickerexport = {};
 
@@ -59,11 +59,82 @@ var exec = require('cordova/exec');
       this._callback;
     }
 
-    DatePicker.prototype.show = function(options, cb) {
-      alert('TEST JAVASCRIPT');
+    DatePicker.prototype.show = function (options, cb) {
+        var padDate = function (date) {
+            if (date.length == 1) {
+                return ("0" + date);
+            }
+            return date;
+        };
+        
+        var formatDate = function (date) {
+            date = new Date(date);
+            /*
+            date = date.getFullYear()
+                  + "-"
+                  + padDate(date.getMonth() + 1)
+                  + "-"
+                  + padDate(date.getDate())
+                  + "T"
+                  + padDate(date.getHours())
+                  + ":"
+                  + padDate(date.getMinutes())
+                  + ":00Z";
+                  */
+            //date = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+            date = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()-1, date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+            return date
+        }
+        if (options.date) {
+            options.date = formatDate(options.date);
+        }
+
+        if (options.minDate) {
+            options.minDate = formatDate(options.minDate);
+        }
+
+        if (options.maxDate) {
+            options.maxDate = formatDate(options.maxDate);
+        }
+
+        this._callback = cb;
+        var onSuccess = function (date) {
+            var d = new Date(parseInt(date,10));
+            console.log(d);
+            if (cb) {
+                cb(d);
+            }
+        }
+        if (options.mode == 'date') {
+            exec(onSuccess,
+              null,
+              "DateTimePicker",
+              "selectDate",
+              [options.date]
+            );
+        } else {
+            exec(onSuccess,
+              null,
+              "DateTimePicker",
+              "selectTime",
+              [options.date]
+            );
+        }
+    }
+    DatePicker.prototype._dateSelected = function (date) {
+        var d = new Date(parseFloat(date) * 1000);
+        if (cb) {
+            cb(d);
+        }
     }
 
     var datePicker = new DatePicker();
     module.exports = datePicker;
-
+    if (!window.plugins) {
+        window.plugins = {};
+    }
+    if(!window.plugins.datePciker) {
+        window.plugins.datePicker = datePicker;
+    }
     //module.exports = pickerexport;
+});
