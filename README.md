@@ -1,9 +1,8 @@
-# DatePicker Plugin for Cordova/PhoneGap 3.0 (iOS and Android)
+# DatePicker Plugin for Cordova/PhoneGap 3.0 (iOS, Android & WP8)
 
 This is a combined version of DatePicker iOS and Android plugin for Cordova/Phonegap 3.0.
-- Original iOS version: https://github.com/sectore/phonegap3-ios-datepicker-plugin
-
-- Original Android version: https://github.com/bikasv/cordova-android-plugins/tree/master/datepicker
+- Original iOS and android version: https://github.com/VitaliiBlagodir/cordova-plugin-datepicker
+- Original WP8 version: https://github.com/hypermurea/phonegap-wp8-datepicker-plugin
 
 ## Installation
 
@@ -12,12 +11,12 @@ This is a combined version of DatePicker iOS and Android plugin for Cordova/Phon
 2) Add a plugin to your project using Cordova CLI:
 
 ```bash
-cordova plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker
+cordova plugin add https://github.com/michaelfranz89/cordova-plugin-datepicker
 ```
 Or using PhoneGap CLI:
 
 ```bash
-phonegap local plugin add https://github.com/VitaliiBlagodir/cordova-plugin-datepicker
+phonegap local plugin add https://github.com/michaelfranz89/cordova-plugin-datepicker
 ```
 
 ## Usage
@@ -35,7 +34,7 @@ datePicker.show(options, function(date){
 
 ## Options
 
-### mode - iOS, Android
+### mode - iOS, Android, wp8
 The mode of the date picker.
 
 Type: String
@@ -44,7 +43,7 @@ Values: `date` | `time` | `datetime` (iOS only)
 
 Default: `date`
 
-### date - iOS, Android
+### date - iOS, Android, wp8
 Selected date.
 
 Type: String
