@@ -14,7 +14,7 @@
         
         var formatDate = function (date) {
             date = new Date(date);
-            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours()-1, date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+            return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
         }
         if (options.date) {
             options.date = formatDate(options.date);
