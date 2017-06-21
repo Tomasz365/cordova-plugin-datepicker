@@ -34,8 +34,11 @@
 
 #pragma mark - UIDatePicker
 
+NSString *callbackId = nil;
+
 - (void)show:(CDVInvokedUrlCommand*)command {
   NSMutableDictionary *options = [command argumentAtIndex:0];
+  callbackId = command.callbackId;
   if (isIPhone) {
     [self showForPhone: options];
   } else {
@@ -138,9 +141,9 @@
 
 - (void)jsDateSelected {
   NSTimeInterval seconds = [self.datePicker.date timeIntervalSince1970];
-  NSString* jsCallback = [NSString stringWithFormat:@"datePicker._dateSelected(\"%f\");", seconds];
-  //NSLog(jsCallback);
+  NSString* jsCallback = [NSString stringWithFormat:@"%f", seconds];
   // [super writeJavascript:jsCallback];
+  [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:jsCallback] callbackId:callbackId];
 }
 
 

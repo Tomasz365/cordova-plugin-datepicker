@@ -78,7 +78,7 @@ DatePicker.prototype.show = function(options, cb) {
     }
     this._callback = cb;
 
-    exec(null, 
+    exec(this._dateSelected.bind(this),
       null, 
       "DatePicker", 
       "show",
