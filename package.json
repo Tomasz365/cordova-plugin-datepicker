@@ -1,0 +1,29 @@
+{
+  "name": "cordova-plugin-datepicker",
+  "version": "1.0.0",
+  "description": "This is a combined version of DatePicker iOS and Android plugin for Cordova/Phonegap 3.0. - Original iOS and android version: https://github.com/VitaliiBlagodir/cordova-plugin-datepicker - Original WP8 version: https://github.com/hypermurea/phonegap-wp8-datepicker-plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tomasz365/cordova-plugin-datepicker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tomasz365/cordova-plugin-datepicker/issues"
+  },
+  "homepage": "https://github.com/Tomasz365/cordova-plugin-datepicker#readme",
+    "cordova": {
+    "id": "cordova-plugin-datepicker",
+    "platforms": [
+      "android",
+      "ios",
+      "wp7",
+      "wp8",
+      "windows"
+    ]
+  }
+}
